@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>测试API调用</title>
+</head>
+<body>
+    <h1>测试API调用</h1>
+    <button onclick="testAPI()">测试深圳-龙岩</button>
+    <div id="result"></div>
+    
+    <script>
+        async function testAPI() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '测试中...';
+            
+            try {
+                const response = await fetch('/api/calculate-optimal-cities', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ cityA: '深圳', cityB: '龙岩', maxResults: 5 }),
+                });
+                
+                const data = await response.json();
+                resultDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (error) {
+                resultDiv.innerHTML = `错误: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>

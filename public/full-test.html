@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>完整API测试</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>完整API测试 - 深圳到龙岩</h1>
+    <button id="testBtn">点击测试完整API</button>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('testBtn').onclick = async function() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '正在测试...';
+
+            try {
+                const cityA = '深圳';
+                const cityB = '龙岩';
+
+                const response = await fetch('/api/calculate-optimal-cities', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({cityA, cityB, maxResults: 5})
+                });
+
+                const data = await response.json();
+                console.log('完整响应:', data);
+
+                if (data.error) {
+                    resultDiv.innerHTML = '<p style="color:red">错误: ' + data.error + '</p>';
+                } else if (data.message) {
+                    resultDiv.innerHTML = '<p style="color:orange">消息: ' + data.message + '</p>';
+                } else if (data.recommendations && data.recommendations.length > 0) {
+                    let html = '<h3>推荐结果(' + data.recommendations.length + '个):</h3><ul>';
+                    data.recommendations.forEach((r, i) => {
+                        html += '<li>' + (i+1) + '. ' + r.city + ' - 评分:' + r.score + '</li>';
+                    });
+                    html += '</ul>';
+                    resultDiv.innerHTML = html;
+                } else {
+                    resultDiv.innerHTML = '<p>没有找到推荐结果 (可能是没有合适的交通路线)</p><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = '<p style="color:red">请求失败: ' + error.message + '</p>';
+            }
+        };
+    </script>
+</body>
+</html>
