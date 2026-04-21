@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API测试</title>
+</head>
+<body>
+  <h1>API测试</h1>
+  <form id="testForm">
+    <div>
+      <label for="cityA">城市A:</label>
+      <input type="text" id="cityA" name="cityA" value="深圳">
+    </div>
+    <div>
+      <label for="cityB">城市B:</label>
+      <input type="text" id="cityB" name="cityB" value="龙岩">
+    </div>
+    <button type="submit">测试API</button>
+  </form>
+  <div id="result"></div>
+
+  <script>
+    document.getElementById('testForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const cityA = document.getElementById('cityA').value;
+      const cityB = document.getElementById('cityB').value;
+      
+      try {
+        const response = await fetch('/api/calculate-optimal-cities', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ cityA, cityB, maxResults: 5 }),
+        });
+        
+        const data = await response.json();
+        document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        document.getElementById('result').textContent = '错误: ' + error.message;
+      }
+    });
+  </script>
+</body>
+</html>

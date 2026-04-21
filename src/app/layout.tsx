@@ -18,7 +18,6 @@ export default function RootLayout({
         <script
           type="text/javascript"
           src={`https://webapi.amap.com/maps?v=2.0&key=${process.env.NEXT_PUBLIC_AMAP_KEY}`}
-          async
         ></script>
       </body>
     </html>

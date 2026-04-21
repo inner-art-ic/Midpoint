@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>高德地图测试</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    #map-container {
+      width: 100%;
+      height: 500px;
+      border: 1px solid #ccc;
+      margin-top: 20px;
+    }
+    .log {
+      margin-top: 20px;
+      padding: 10px;
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      max-height: 300px;
+      overflow-y: scroll;
+    }
+  </style>
+</head>
+<body>
+  <h1>高德地图测试</h1>
+  <div id="map-container"></div>
+  <div class="log" id="log"></div>
+  
+  <script type="text/javascript">
+    // 日志函数
+    function log(message) {
+      const logElement = document.getElementById('log');
+      const timestamp = new Date().toLocaleTimeString();
+      logElement.innerHTML += `[${timestamp}] ${message}\n`;
+      logElement.scrollTop = logElement.scrollHeight;
+      console.log(message);
+    }
+    
+    // 替换为你的高德地图API密钥
+    const AMAP_KEY = 'b86966801b1b0eeee797f1bd52a17575';
+    
+    log('开始加载高德地图脚本...');
+    
+    // 加载高德地图脚本
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = `https://webapi.amap.com/maps?v=2.0&key=${AMAP_KEY}`;
+    script.async = true;
+    
+    script.onload = function() {
+      log('高德地图脚本加载成功');
+      initMap();
+    };
+    
+    script.onerror = function() {
+      log('高德地图脚本加载失败');
+    };
+    
+    document.head.appendChild(script);
+    
+    // 初始化地图
+    function initMap() {
+      if (typeof AMap !== 'undefined') {
+        log('高德地图对象已加载，版本: ' + AMap.version);
+        
+        const mapContainer = document.getElementById('map-container');
+        log('地图容器: ' + mapContainer);
+        log('地图容器大小: ' + mapContainer.offsetWidth + 'x' + mapContainer.offsetHeight);
+        
+        try {
+          const map = new AMap.Map('map-container', {
+            zoom: 8,
+            center: [114.057868, 22.543099], // 默认深圳
+            resizeEnable: true
+          });
+          
+          log('地图初始化成功');
+          
+          // 添加地图控件
+          try {
+            if (AMap.Scale) {
+              map.addControl(new AMap.Scale());
+              log('添加比例尺控件成功');
+            } else {
+              log('AMap.Scale 不存在');
+            }
+            if (AMap.ToolBar) {
+              map.addControl(new AMap.ToolBar());
+              log('添加工具栏控件成功');
+            } else {
+              log('AMap.ToolBar 不存在');
+            }
+          } catch (controlError) {
+            log('添加地图控件失败: ' + controlError.message);
+          }
+          
+          // 绘制测试路线
+          try {
+            const polyline = new AMap.Polyline({
+              path: [[114.057868, 22.543099], [116.397428, 39.90923]], // 深圳到北京
+              strokeColor: '#1890ff',
+              strokeWeight: 5,
+              strokeOpacity: 0.8,
+              strokeStyle: 'solid'
+            });
+            polyline.setMap(map);
+            log('绘制测试路线成功');
+          } catch (polylineError) {
+            log('绘制测试路线失败: ' + polylineError.message);
+          }
+          
+        } catch (error) {
+          log('地图初始化失败: ' + error.message);
+        }
+      } else {
+        log('高德地图对象未定义');
+      }
+    }
+  </script>
+</body>
+</html>

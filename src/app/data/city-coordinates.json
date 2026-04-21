@@ -1,0 +1,32 @@
+{
+  "coordinates": {
+    "深圳": {
+      "longitude": 114.057868,
+      "latitude": 22.543099
+    },
+    "龙岩": {
+      "longitude": 116.916108,
+      "latitude": 25.105402
+    },
+    "莆田": {
+      "longitude": 119.017362,
+      "latitude": 25.435801
+    },
+    "福州": {
+      "longitude": 119.29659,
+      "latitude": 26.075302
+    },
+    "泉州": {
+      "longitude": 118.67194,
+      "latitude": 24.875875
+    },
+    "宁德": {
+      "longitude": 119.5275,
+      "latitude": 26.659026
+    },
+    "三明": {
+      "longitude": 117.639344,
+      "latitude": 26.257642
+    }
+  }
+}

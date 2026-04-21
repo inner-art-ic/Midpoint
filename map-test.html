@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>高德地图测试</title>
+  <style>
+    #map-container {
+      width: 100%;
+      height: 500px;
+    }
+  </style>
+</head>
+<body>
+  <h1>高德地图测试</h1>
+  <div id="map-container"></div>
+  
+  <script type="text/javascript">
+    // 替换为你的高德地图API密钥
+    const AMAP_KEY = 'b86966801b1b0eeee797f1bd52a17575';
+    
+    // 加载高德地图脚本
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = `https://webapi.amap.com/maps?v=2.0&key=${AMAP_KEY}`;
+    script.async = true;
+    script.onload = function() {
+      console.log('高德地图脚本加载成功');
+      initMap();
+    };
+    script.onerror = function() {
+      console.error('高德地图脚本加载失败');
+    };
+    document.head.appendChild(script);
+    
+    // 初始化地图
+    function initMap() {
+      if (typeof AMap !== 'undefined') {
+        console.log('高德地图对象已加载:', AMap);
+        
+        const map = new AMap.Map('map-container', {
+          zoom: 8,
+          center: [114.057868, 22.543099], // 默认深圳
+          resizeEnable: true
+        });
+        
+        console.log('地图初始化成功:', map);
+        
+        // 添加地图控件
+        map.addControl(new AMap.Scale());
+        map.addControl(new AMap.ToolBar());
+        
+        console.log('地图控件添加成功');
+      } else {
+        console.error('高德地图对象未定义');
+      }
+    }
+  </script>
+</body>
+</html>
